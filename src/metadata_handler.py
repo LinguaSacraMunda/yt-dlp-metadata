@@ -2,11 +2,13 @@ import os
 import eyed3
 import mutagen
 import codecs
+import re
 
+HOME = os.path.expanduser('~')
 # Download path
 PATH = './download/'
 # Destination path
-PDST = './converted/'
+PDST = HOME + '/.local/music/'
 # Temporary location of downloaded files
 TEMP = PATH + 'temp/'
 
@@ -52,10 +54,10 @@ def getGenInfo(albm, _year=None, _genre=None):
 
 def clearName(file_name):
     # Remove the numbering in front of the name and rename the file
-    main_name = file_name[(file_name.index('-') + 1):]
-    os.rename(TEMP + file_name, TEMP + main_name)
-    # Remove the .mp3 extension from the name string
-    name = main_name[:-4]
+    full_name = os.path.splitext(file_name[(file_name.index('-') + 1):])
+    # Clear any informative text at the end of the file name
+    name = re.sub(r'\s*\((?=[^)]*[A-Za-z])(?:[^()]|\([^()]*\))*\)\s*$', '', full_name[0])
+    os.rename(TEMP + file_name, TEMP + name + full_name[1])
     return name
 
 def getNameAndIndex(file_name):
