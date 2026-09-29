@@ -16,7 +16,7 @@ parser.add_argument('-m', '--metadata', default=True, action=argparse.BooleanOpt
 
 HOME = os.path.expanduser('~')
 # Download path
-PATH = './download/'
+PATH = '/tmp/download/'
 # Destination path
 PDST = HOME + '/.local/music/'
 # Temporary location of downloaded files

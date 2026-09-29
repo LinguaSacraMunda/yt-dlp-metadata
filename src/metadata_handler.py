@@ -1,4 +1,5 @@
 import os
+import shutil
 import eyed3
 import mutagen
 import codecs
@@ -6,7 +7,7 @@ import re
 
 HOME = os.path.expanduser('~')
 # Download path
-PATH = './download/'
+PATH = '/tmp/download/'
 # Destination path
 PDST = HOME + '/.local/music/'
 # Temporary location of downloaded files
@@ -39,7 +40,7 @@ def looseFileMove(albm_dir, album):
     for file in file_names:
         src = albm_dir + file
         dst = PDST + album + '/' + file
-        os.rename(src, dst)
+        shutil.move(src, dst)
 
 def getGenInfo(albm, _year=None, _genre=None):
     gen_data = {'artist_name':None, 'album_title':None, 'year':None,  'genre':None}
@@ -57,7 +58,7 @@ def clearName(file_name):
     full_name = os.path.splitext(file_name[(file_name.index('-') + 1):])
     # Clear any informative text at the end of the file name
     name = re.sub(r'\s*\((?=[^)]*[A-Za-z])(?:[^()]|\([^()]*\))*\)\s*$', '', full_name[0])
-    os.rename(TEMP + file_name, TEMP + name + full_name[1])
+    shutil.move(TEMP + file_name, TEMP + name + full_name[1])
     return name
 
 def getNameAndIndex(file_name):
@@ -69,7 +70,7 @@ def getNameAndIndex(file_name):
 def moveFile(file_name, album):
     scr = TEMP + file_name + '.mp3'
     dst = PDST + album + '/' + file_name + '.mp3'
-    os.rename(scr, dst)
+    shutil.move(scr, dst)
 
 def getRuntime(file):
     audio = mutagen.File(file)
