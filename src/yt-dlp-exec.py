@@ -13,6 +13,7 @@ parser.add_argument('-y', '--year', type=int)
 parser.add_argument('-g', '--genre', nargs='*')
 parser.add_argument('-d', '--download', default=True, action=argparse.BooleanOptionalAction, help='Enable download, True by default')
 parser.add_argument('-m', '--metadata', default=True, action=argparse.BooleanOptionalAction, help='Enable metadata, True by default')
+parser.add_argument('-c', '--clear_name', default=False, action=argparse.BooleanOptionalAction, help='Clear trainling title information, False by default')
 
 HOME = os.path.expanduser('~')
 # Download path
@@ -52,7 +53,8 @@ def main():
         if not args.year:
             args.year = int(input("year: "))
 
-        metadata_handler.metadata_handler(args.artist, args.album, args.year, args.genre, _PATH=PATH, _PDST=PDST, _TEMP=TEMP)
+        metadata_handler.metadata_handler(args.artist, args.album, args.year, args.genre, 
+                                          _PATH=PATH, _PDST=PDST, _TEMP=TEMP, _CLR_NAME=args.clear_name)
 
 
 

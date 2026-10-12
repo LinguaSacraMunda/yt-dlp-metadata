@@ -13,6 +13,8 @@ PDST = HOME + '/.local/music/'
 # Temporary location of downloaded files
 TEMP = PATH + 'temp/'
 
+CLR_NAME = False
+
 # Find the folder where the files are to be moved to after tagging
 # Folder is named in form of: {artist_name} - {album_title}
 def defineAlbumPath(_input=None):
@@ -57,7 +59,7 @@ def clearName(file_name):
     # Remove the numbering in front of the name and rename the file
     full_name = os.path.splitext(file_name[(file_name.index('-') + 1):])
     # Clear any informative text at the end of the file name
-    name = re.sub(r'\s*\((?=[^)]*[A-Za-z])(?:[^()]|\([^()]*\))*\)\s*$', '', full_name[0])
+    name = re.sub(r'\s*\((?=[^)]*[A-Za-z])(?:[^()]|\([^()]*\))*\)\s*$', '', full_name[0]) if CLR_NAME else full_name[0]
     shutil.move(TEMP + file_name, TEMP + name + full_name[1])
     return name
 
@@ -81,7 +83,7 @@ def m3u8Editor(m3u8File, playlist):
     m3u8File.writelines(line)
 
 
-def metadata_handler(_artist=None, _albm=None, _year=None, _genre=None, _PATH=None, _PDST=None, _TEMP=None):
+def metadata_handler(_artist=None, _albm=None, _year=None, _genre=None, _PATH=None, _PDST=None, _TEMP=None, _CLR_NAME=None):
     if _PATH:
         global PATH
         PATH = _PATH
@@ -93,6 +95,10 @@ def metadata_handler(_artist=None, _albm=None, _year=None, _genre=None, _PATH=No
     if _TEMP:
         global TEMP
         TEMP = _TEMP
+
+    if _CLR_NAME:
+        global CLR_NAME
+        CLR_NAME = _CLR_NAME
 
     if not os.path.exists(PDST):
         os.mkdir(PDST)
